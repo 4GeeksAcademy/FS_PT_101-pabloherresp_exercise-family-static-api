@@ -27,8 +27,7 @@ def sitemap():
 
 @app.route('/members', methods=['GET'])
 def handle_get_members():
-    members = jackson_family.get_all_members()
-    response_body = {"family": members}
+    response_body = jackson_family.get_all_members()
     return jsonify(response_body), 200
 
 @app.route('/members/<int:id>',methods=['GET'])
@@ -46,7 +45,9 @@ def handle_post_member():
     new_member = request.json
     added = jackson_family.add_member(new_member)
     if added:
-        return handle_get_members()
+        response_body = {"family":jackson_family.get_all_members(),
+                         "done":"true"}
+        return jsonify(response_body), 200
     else:
         response_body = {"error":"There was an error adding the member."}
         return jsonify(response_body), 400
@@ -55,7 +56,9 @@ def handle_post_member():
 def handle_delete_member(id):
     deleted = jackson_family.delete_member(id)
     if deleted:
-        return handle_get_members()
+        response_body = {"family":jackson_family.get_all_members(),
+                         "done":"true"}
+        return jsonify(response_body), 200
     else:
         response_body = {"error":"Couldn't find a family member with that ID."}
         return jsonify(response_body), 400
@@ -65,7 +68,9 @@ def handle_edit_member(id):
     data = request.json
     edited = jackson_family.edit_a_member(id,data)
     if edited:
-        return handle_get_specific_member(id)
+        response_body = {"family":jackson_family.get_member(id),
+                         "done":"true"}
+        return jsonify(response_body), 200
     else:
         response_body = {"error":"Error when editing family member."}
         return jsonify(response_body), 400
