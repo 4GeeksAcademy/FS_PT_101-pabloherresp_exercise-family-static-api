@@ -60,6 +60,15 @@ def handle_delete_member(id):
         response_body = {"error":"Couldn't find a family member with that ID."}
         return jsonify(response_body), 400
 
+@app.route('/members/<int:id>', methods=['PUT'])
+def handle_edit_member(id):
+    data = request.json
+    edited = jackson_family.edit_a_member(id,data)
+    if edited:
+        return handle_get_specific_member(id)
+    else:
+        response_body = {"error":"Error when editing family member."}
+        return jsonify(response_body), 400
 
 # This only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':

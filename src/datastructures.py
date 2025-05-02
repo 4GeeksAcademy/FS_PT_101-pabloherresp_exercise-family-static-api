@@ -52,19 +52,27 @@ class FamilyStructure:
         return False
 
     def delete_member(self, id):
-        for item in range(len(self._members)):
-            if self._members[item]["id"] == id:
-                self._members.pop(item)
+        for i in range(len(self._members)):
+            if self._members[i]["id"] == id:
+                self._members.pop(i)
                 return True
         return False
 
     def get_member(self, id):
         for item in self._members:
             if item["id"] == id:
-                print("----- FOUND -------")
                 return item
         return None
 
     # This method is done, it returns a list with all the family members
     def get_all_members(self):
         return self._members
+    
+    def edit_a_member(self,id,data):
+        for item in self._members:
+            if item["id"] == id:
+                item["first_name"] = data["first_name"]
+                item["age"] = data["age"]
+                item["lucky_numbers"] = data["lucky_numbers"]
+                return True
+        return False
